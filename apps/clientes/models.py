@@ -8,5 +8,5 @@ class cliente(models.Model):
     telefone = models.CharField(verbose_name="TELEFONE", max_length=14)
     nascimento = models.DateField(verbose_name= "data de nascimento")
 
-    def _str_(self): 
+    def __str__(self): 
         return self.nome 

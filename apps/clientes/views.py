@@ -7,7 +7,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
 
 
-from .forms import clienteForm
+from .forms import clienteForm, UsuarioForm
 from .models import cliente
 
 # Create your views here.
@@ -53,8 +53,6 @@ def atualizar_cliente(request,id):
     return render(request, template_name, context)
 
 
-
-
 @login_required
 def excluir_cliente(request, id):
     try:
@@ -84,3 +82,19 @@ def login_usuario(request):
     context = {'form': form}
 
     return render(request, template_name, context) 
+
+def novo_usuario(request):
+    template_name = 'novo_usuario.html'
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            f= form.save(commit=False)
+            f.set_password(f.password)
+            f.save()
+            return redirect('login_usuario')
+        else:
+            return HttpResponse('Erro ao criar o usuário') 
+    else:
+        form = UsuarioForm()
+    context = {'form': form}
+    return render(request, template_name, context)    
